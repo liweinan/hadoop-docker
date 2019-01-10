@@ -31,6 +31,9 @@ COPY hadoop-2.7.1.tar.gz /usr/local
 RUN cd /usr/local && ls && tar zxvf hadoop-2.7.1.tar.gz
 RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
 
+# learn code
+COPY hadoop-book /root/hadoop-book
+
 ENV HADOOP_PREFIX /usr/local/hadoop
 ENV HADOOP_COMMON_HOME /usr/local/hadoop
 ENV HADOOP_HDFS_HOME /usr/local/hadoop
