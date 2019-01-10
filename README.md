@@ -1,10 +1,4 @@
-# Apache Hadoop 2.7.1 Docker image
-
-[![DockerPulls](https://img.shields.io/docker/pulls/sequenceiq/hadoop-docker.svg)](https://registry.hub.docker.com/u/sequenceiq/hadoop-docker/)
-[![DockerStars](https://img.shields.io/docker/stars/sequenceiq/hadoop-docker.svg)](https://registry.hub.docker.com/u/sequenceiq/hadoop-docker/)
-
-
-
+# # Apache Hadoop 2.7.1 Docker image
 _Note: this is the master branch - for a particular Hadoop version always check the related branch_
 
 A few weeks ago we released an Apache Hadoop 2.3 Docker image - this quickly become the most [popular](https://registry.hub.docker.com/search?q=hadoop&s=downloads) Hadoop image in the Docker [registry](https://registry.hub.docker.com/).
@@ -36,8 +30,8 @@ In order to use the Docker image you have just build or pulled use:
 
 **Make sure that SELinux is disabled on the host. If you are using boot2docker you don't need to do anything.**
 
-```
-docker run -it sequenceiq/hadoop-docker:2.7.1 /etc/bootstrap.sh -bash
+```bash
+$ docker run -it hadoop-sandbox /etc/bootstrap.sh -bash
 ```
 
 ## Testing
@@ -46,10 +40,17 @@ You can run one of the stock examples:
 
 ```
 cd $HADOOP_PREFIX
+```
+
 # run the mapreduce
+
+````
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar grep input output 'dfs[a-z.]+'
+```
 
 # check the output
+
+```
 bin/hdfs dfs -cat output/*
 ```
 
