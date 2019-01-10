@@ -10,10 +10,13 @@ USER root
 # install dev tools
 #RUN apk add curl which tar sudo openssh-server openssh-clients rsync
 RUN apk add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget 
+# http://www.iops.cc/make-splunk-docker-w
+RUN apk add --update procps
+
 
 # passwordless ssh
-RUN ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key
-RUN ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key
+# https://www.ssh.com/ssh/host-key
+RUN ssh-keygen -A
 RUN ssh-keygen -q -N "" -t rsa -f /root/.ssh/id_rsa
 RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
@@ -64,8 +67,6 @@ RUN mv /tmp/native /usr/local/hadoop/lib
 ADD ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config
 RUN chown root:root /root/.ssh/config
-# https://www.ssh.com/ssh/host-key
-RUN ssh-keygen -A
 
 # # installing supervisord
 # RUN yum install -y python-setuptools
