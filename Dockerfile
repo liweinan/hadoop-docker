@@ -33,6 +33,7 @@ RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
 
 # learn code
 COPY hadoop-book /root/hadoop-book
+COPY run_example.sh /root
 
 ENV HADOOP_PREFIX /usr/local/hadoop
 ENV HADOOP_COMMON_HOME /usr/local/hadoop
@@ -43,6 +44,8 @@ ENV HADOOP_CONF_DIR /usr/local/hadoop/etc/hadoop
 ENV YARN_CONF_DIR $HADOOP_PREFIX/etc/hadoop
 
 ENV JAVA_HOME /usr/lib/jvm/default-jvm
+
+ENV USER root
 
 RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HADOOP_PREFIX=/usr/local/hadoop\nexport HADOOP_HOME=/usr/local/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
@@ -96,9 +99,11 @@ RUN echo "Port 2122" >> /etc/ssh/sshd_config
 # https://stackoverflow.com/questions/14612371/how-do-i-run-multiple-background-commands-in-bash-in-a-single-line
 RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
  $HADOOP_PREFIX/sbin/start-dfs.sh && \
+ $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
  $HADOOP_PREFIX/bin/hdfs dfs -mkdir -p /user/root
 RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
  $HADOOP_PREFIX/sbin/start-dfs.sh && \
+ $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \ 
  $HADOOP_PREFIX/bin/hdfs dfs -put $HADOOP_PREFIX/etc/hadoop/ input
  
 # https://github.com/gliderlabs/docker-alpine/issues/397
