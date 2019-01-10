@@ -3,7 +3,13 @@
 编译并运行容器：
 
 ```bash
-./build.sh
+$ ./build.sh
+```
+
+运行容器：
+
+```bash
+$ docker run -it hadoop-sandbox /etc/bootstrap.sh -bash
 ```
 
 跑例子：

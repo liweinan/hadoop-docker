@@ -17,7 +17,7 @@ sed s/HOSTNAME/$HOSTNAME/ /usr/local/hadoop/etc/hadoop/core-site.xml.template > 
 $HADOOP_PREFIX/sbin/start-dfs.sh
 $HADOOP_PREFIX/sbin/start-yarn.sh
 # https://unix.stackexchange.com/questions/76354/who-sets-user-and-username-environment-variables/76356
-USER=`whoami` $HADOOP_PREFIX/sbin/mr-jobhistory-daemon.sh start historyserver
+USER=root $HADOOP_PREFIX/sbin/mr-jobhistory-daemon.sh start historyserver
 
 if [[ $1 == "-d" ]]; then
   while true; do sleep 1000; done
