@@ -31,7 +31,7 @@ RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
 
 # learn code
 # COPY hadoop-book /root/hadoop-book
-RUN cd /root && git clone git@github.com:liweinan/hadoop-book.git && rm -rf hadoop-book/.git*
+RUN cd /root && git clone https://github.com/liweinan/hadoop-book.git && rm -rf hadoop-book/.git*
 RUN cd /root/hadoop-book && mvn -Dmaven.test.skip=true package
 COPY run_example.sh /root
 
