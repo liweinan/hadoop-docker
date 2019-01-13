@@ -38,6 +38,7 @@ COPY run_example.sh /root
 RUN cd /root && git clone https://github.com/jacoffee/hdfs-tree.git && rm -rf hdfs-tree/.git*
 RUN cd /root/hdfs-tree && mvn -Dmaven.test.skip=true package
 COPY tree.sh /root
+ENV HDFS_TREE_HOME /root/hdfs-tree/
 
 ENV HADOOP_PREFIX /usr/local/hadoop
 ENV HADOOP_COMMON_HOME /usr/local/hadoop
