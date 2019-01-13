@@ -4,6 +4,8 @@
 
 $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
+export PATH=$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
+ 
 rm /tmp/*.pid
 
 # installing libraries if any - (resource urls added comma separated to the ACP system variable)
