@@ -12,6 +12,16 @@ $ ./build.sh
 $ docker run -it -P hadoop-learn /etc/bootstrap.sh -bash
 ```
 
+---
+
+注：如果是从dockerhub上使用build好的container，就忽略上面两步，直接运行：
+
+```bash
+$ docker run -it -P weli/hadoop-learn /etc/bootstrap.sh -bash
+```
+
+---
+
 ## 3. 跑hadoop自带的例子
 
 ```bash
