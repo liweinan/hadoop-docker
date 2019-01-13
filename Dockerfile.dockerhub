@@ -113,6 +113,7 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
  
 # https://github.com/gliderlabs/docker-alpine/issues/397
 RUN apk add busybox-extras
+RUN echo "export PATH=$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH" >> /etc/profile
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
