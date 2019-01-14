@@ -8,8 +8,7 @@ MAINTAINER l.weinan@gmail.com
 USER root
 
 # install dev tools
-#RUN apk add curl which tar sudo openssh-server openssh-clients rsync
-RUN apk add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget maven git
+RUN apk add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget maven git tree
 # http://www.iops.cc/make-splunk-docker-w
 RUN apk add --update procps
 
