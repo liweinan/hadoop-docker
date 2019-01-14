@@ -1,12 +1,11 @@
-# Apache Hadoop 2.7.1 Docker Image
 
-## 1. 编译容器
+<p align="center"> {{ 编译容器 }} </p>
 
 ```bash
 $ ./build.sh
 ```
 
-## 2. 运行并登入容器
+<p align="center"> {{ 运行并登入容器 }} </p>
 
 ```bash
 $ docker run -it -P hadoop-learn /etc/bootstrap.sh -bash
