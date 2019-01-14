@@ -18,7 +18,7 @@ $ docker run -it -P hadoop-learn /etc/bootstrap.sh -bash
 $ docker run -it -P weli/hadoop-learn:latest /etc/bootstrap.sh -bash
 ```
 
-<div style="text-align: middle"> ~~~ </div>
+<p align="center"> =+=+=+=+=+=+=+=+=+=+=+=+= </p>
 
 ### { 跑hadoop自带的例子 }
 
