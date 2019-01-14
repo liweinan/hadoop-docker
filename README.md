@@ -40,6 +40,6 @@ $ bin/hdfs dfs -cat output/*
 
 ```bash
 $ /root/run_example.sh
-````
+```
 
 ∎
