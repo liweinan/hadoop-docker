@@ -18,7 +18,7 @@ $ docker run -it -P hadoop-learn /etc/bootstrap.sh -bash
 $ docker run -it -P weli/hadoop-learn:latest /etc/bootstrap.sh -bash
 ```
 
-<p align="center"> =+=+=+=+=+=+=+=+=+=+=+=+= </p>
+<p align="center"> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </p>
 
 ### { 跑hadoop自带的例子 }
 
@@ -33,6 +33,8 @@ $ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar grep
 $ bin/hdfs dfs -cat output/*
 ```
 
+<p align="center"> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </p>
+
 ### { 跑hadoop-book的例子 }
 
 执行脚本：
@@ -40,6 +42,8 @@ $ bin/hdfs dfs -cat output/*
 ```bash
 $ /root/run_example.sh
 ```
+
+<p align="center"> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </p>
 
 ### { hdfs tree的例子 }
 
