@@ -3,4 +3,9 @@
         <name>dfs.replication</name>
         <value>1</value>
     </property>
+    <!--[Managing HDFS Permissions and Users | HDFS Commands, HDFS Permissions and HDFS Storage | InformIT](http://www.informit.com/articles/article.aspx?p=2755708&seqNum=3)-->
+    <property>
+        <name>dfs.permissions.enabled</name>
+        <value>false</value>
+    </property>
 </configuration>
