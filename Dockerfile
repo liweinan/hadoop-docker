@@ -117,7 +117,7 @@ RUN cd /usr/local \
    && wget http://apache.mirrors.ionfish.org/oozie/5.1.0/oozie-5.1.0.tar.gz \
    && tar zxvf oozie-5.1.0.tar.gz \
    && cd oozie-5.1.0 \
-   && mvn install
+   && mvn -C -U -B clean install -Dmaven.test.skip=true
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
