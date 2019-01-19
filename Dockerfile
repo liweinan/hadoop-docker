@@ -8,7 +8,7 @@ MAINTAINER l.weinan@gmail.com
 USER root
 
 # install dev tools
-RUN apk add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget maven git tree
+RUN apk add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget maven git tree patch
 # http://www.iops.cc/make-splunk-docker-w
 RUN apk add --update procps
 
@@ -31,7 +31,7 @@ RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
 # learn code
 # COPY hadoop-book /root/hadoop-book
 RUN cd /root && git clone https://github.com/liweinan/hadoop-book.git && rm -rf hadoop-book/.git*
-RUN cd /root/hadoop-book && mvn -Dmaven.test.skip=true package
+RUN cd /root/hadoop-book && mvn -Dmaven.test.skip=true package && rm -fR /root/.m2
 COPY run_example.sh /root
 
 RUN cd /root && git clone https://github.com/jacoffee/hdfs-tree.git && rm -rf hdfs-tree/.git*
@@ -113,11 +113,29 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
 # https://github.com/gliderlabs/docker-alpine/issues/397
 RUN apk add busybox-extras
 
-RUN cd /usr/local \
-   && wget http://apache.mirrors.ionfish.org/oozie/5.1.0/oozie-5.1.0.tar.gz \
-   && tar zxvf oozie-5.1.0.tar.gz \
-   && cd oozie-5.1.0 \
-   && mvn -C -U -B clean install -Dmaven.test.skip=true
+# Download Oozie sources
+ADD https://github.com/apache/oozie/archive/release-4.2.0.tar.gz /root/
+RUN cd /root && tar xfv release-4.2.0.tar.gz && rm release-4.2.0.tar.gz
+
+# Patch Oozie webapp pom.xml
+COPY oozie-4.2.0-webapp-pom.xml.patch /root/oozie-release-4.2.0/webapp/
+RUN cd /root/oozie-release-4.2.0/webapp && patch pom.xml oozie-4.2.0-webapp-pom.xml.patch
+
+# Build Oozie. A single RUN because maven dependencies would inflate this layer to gigabytes
+RUN cd /root/oozie-release-4.2.0 \
+	&& mvn clean package assembly:single -DskipTests -P hadoop-2,uber -Dhadoop.version=2.7.1 \
+    && mv /root/oozie-release-4.2.0/distro/target/oozie-4.2.0-distro.tar.gz /opt/ && cd /opt && tar xfv oozie-4.2.0-distro.tar.gz && rm oozie-4.2.0-distro.tar.gz \
+	&& rm -fR /root/oozie-release-4.2.0 \
+	&& rm -fR /root/.m2
+
+RUN mkdir -p /var/log/oozie
+RUN mkdir -p /var/lib/oozie/data
+RUN ln -s /var/log/oozie /opt/oozie-4.2.0/log
+RUN ln -s /var/lib/oozie/data /opt/oozie-4.2.0/data
+
+RUN mkdir /opt/oozie-4.2.0/libext
+ADD http://archive.cloudera.com/gplextras/misc/ext-2.2.zip /opt/oozie-4.2.0/libext/
+RUN /opt/oozie-4.2.0/bin/oozie-setup.sh prepare-war
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
@@ -129,3 +147,6 @@ EXPOSE 10020 19888
 EXPOSE 8030 8031 8032 8033 8040 8042 8088
 #Other ports
 EXPOSE 49707 2122
+# Oozie web ports ( API; admin ui )
+EXPOSE 11000 11001
+

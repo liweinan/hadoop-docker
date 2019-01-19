@@ -4,7 +4,7 @@
 
 $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
-export PATH=$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
+export PATH=$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:/opt/oozie-4.2.0/bin:$PATH
  
 rm /tmp/*.pid
 
