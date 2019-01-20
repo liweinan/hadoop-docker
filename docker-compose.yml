@@ -1,0 +1,7 @@
+version: '3'
+services:
+  hadoop:
+    image: "weli/hadoop-learn"
+  oozie:
+    image: "weli/hadoop-oozie"
+  
