@@ -9,6 +9,8 @@ USER root
 
 # install dev tools
 RUN apk add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget maven git tree patch
+# https://github.com/gliderlabs/docker-alpine/issues/397
+RUN apk add busybox-extras
 # http://www.iops.cc/make-splunk-docker-w
 RUN apk add --update procps
 
@@ -31,11 +33,11 @@ RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
 # learn code
 # COPY hadoop-book /root/hadoop-book
 RUN cd /root && git clone https://github.com/liweinan/hadoop-book.git && rm -rf hadoop-book/.git*
-RUN cd /root/hadoop-book && mvn -Dmaven.test.skip=true package && rm -fR /root/.m2
+RUN cd /root/hadoop-book && mvn -q -Dmaven.test.skip=true package && rm -fR /root/.m2
 COPY run_example.sh /root
 
 RUN cd /root && git clone https://github.com/jacoffee/hdfs-tree.git && rm -rf hdfs-tree/.git*
-RUN cd /root/hdfs-tree && mvn -Dmaven.test.skip=true package
+RUN cd /root/hdfs-tree && mvn -q -Dmaven.test.skip=true package
 COPY tree.sh /root
 ENV HDFS_TREE_HOME /root/hdfs-tree/
 
@@ -109,9 +111,6 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
  $HADOOP_PREFIX/sbin/start-dfs.sh && \
  $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \ 
  $HADOOP_PREFIX/bin/hdfs dfs -put $HADOOP_PREFIX/etc/hadoop/ input
- 
-# https://github.com/gliderlabs/docker-alpine/issues/397
-RUN apk add busybox-extras
 
 # Download Oozie sources
 ADD https://github.com/apache/oozie/archive/release-4.2.0.tar.gz /root/
@@ -123,19 +122,22 @@ RUN cd /root/oozie-release-4.2.0/webapp && patch pom.xml oozie-4.2.0-webapp-pom.
 
 # Build Oozie. A single RUN because maven dependencies would inflate this layer to gigabytes
 RUN cd /root/oozie-release-4.2.0 \
-	&& mvn clean package assembly:single -DskipTests -P hadoop-2,uber -Dhadoop.version=2.7.1 \
-    && mv /root/oozie-release-4.2.0/distro/target/oozie-4.2.0-distro.tar.gz /opt/ && cd /opt && tar xfv oozie-4.2.0-distro.tar.gz && rm oozie-4.2.0-distro.tar.gz \
-	&& rm -fR /root/oozie-release-4.2.0 \
-	&& rm -fR /root/.m2
-
-RUN mkdir -p /var/log/oozie
-RUN mkdir -p /var/lib/oozie/data
-RUN ln -s /var/log/oozie /opt/oozie-4.2.0/log
-RUN ln -s /var/lib/oozie/data /opt/oozie-4.2.0/data
-
-RUN mkdir /opt/oozie-4.2.0/libext
-ADD http://archive.cloudera.com/gplextras/misc/ext-2.2.zip /opt/oozie-4.2.0/libext/
-RUN /opt/oozie-4.2.0/bin/oozie-setup.sh prepare-war
+	&& mvn -q clean package assembly:single -DskipTests -P hadoop-2,uber -Dhadoop.version=2.7.1
+RUN tree /root
+#RUN ls
+#
+#    && mv /root/oozie-release-4.2.0/distro/target/oozie-4.2.0-distro.tar.gz /opt/ && cd /opt && tar xfv oozie-4.2.0-distro.tar.gz && rm oozie-4.2.0-distro.tar.gz \
+#	&& rm -fR /root/oozie-release-4.2.0 \
+#	&& rm -fR /root/.m2
+#
+#RUN mkdir -p /var/log/oozie
+#RUN mkdir -p /var/lib/oozie/data
+#RUN ln -s /var/log/oozie /opt/oozie-4.2.0/log
+#RUN ln -s /var/lib/oozie/data /opt/oozie-4.2.0/data
+#
+#RUN mkdir /opt/oozie-4.2.0/libext
+#ADD http://archive.cloudera.com/gplextras/misc/ext-2.2.zip /opt/oozie-4.2.0/libext/
+#RUN /opt/oozie-4.2.0/bin/oozie-setup.sh prepare-war
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
