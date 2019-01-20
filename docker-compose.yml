@@ -4,4 +4,5 @@ services:
     image: "weli/hadoop-learn"
   oozie:
     image: "weli/hadoop-oozie"
-  
+    depends_on:
+      - "hadoop"
