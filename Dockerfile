@@ -112,6 +112,8 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
  $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \ 
  $HADOOP_PREFIX/bin/hdfs dfs -put $HADOOP_PREFIX/etc/hadoop/ input
 
+ENV PATH $HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
+
 CMD ["/etc/bootstrap.sh", "-d"]
 
 # Hdfs ports
