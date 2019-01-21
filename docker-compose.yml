@@ -2,7 +2,11 @@ version: '3'
 services:
   hadoop:
     image: "weli/hadoop-learn"
+    ports:
+      - "9000:9000"
   oozie:
     image: "weli/hadoop-oozie"
+    ports:
+      - "11000:11000"
     depends_on:
       - "hadoop"
