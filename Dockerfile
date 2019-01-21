@@ -115,7 +115,7 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
      $HADOOP_PREFIX/sbin/start-dfs.sh && \
      $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
      cd /root/hadoop-book/hadoop-examples/target && \
-     $HADOOP_PREFIX/bin/hdfs dfs fs -put max-temp-workflow max-temp-workflow
+     $HADOOP_PREFIX/bin/hdfs dfs -put max-temp-workflow max-temp-workflow
 
 ENV PATH $HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
 
