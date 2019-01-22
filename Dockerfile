@@ -123,7 +123,7 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
      $HADOOP_PREFIX/sbin/start-dfs.sh && \
      $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
      cd /root && \
-     hadoop fs -put examples examples
+     $HADOOP_PREFIX/bin/hdfs dfs -put examples examples
 
 ENV PATH $HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
 
