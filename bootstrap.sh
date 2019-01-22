@@ -23,13 +23,14 @@ $HADOOP_PREFIX/sbin/mr-jobhistory-daemon.sh start historyserver
 
 # https://stackoverflow.com/questions/44469234/cannot-create-directory-in-hdfs-namenode-is-in-safe-mode
 $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave
-nc -l -p 54321 -s 0.0.0.0
+tail -f /dev/null
+#nc -l -p 54321 -s 0.0.0.0
 
-if [[ $1 == "-d" ]]; then
-  while true; do sleep 1000; done
-fi
-
-if [[ $1 == "-bash" ]]; then
-  /bin/bash
-fi
+#if [[ $1 == "-d" ]]; then
+#  while true; do sleep 1000; done
+#fi
+#
+#if [[ $1 == "-bash" ]]; then
+#  /bin/bash
+#fi
  
