@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 : ${HADOOP_PREFIX:=/usr/local/hadoop}
 
