@@ -13,3 +13,4 @@ docker exec -it hadoop-docker_oozie_1 bash -c "mv /tmp/hadoop.tgz /opt && cd /op
 docker exec -it hadoop-docker_oozie_1 bash -c "ls /opt/hadoop"
 
 docker exec -it hadoop-docker_oozie_1 bash -c "oozied.sh stop && oozied.sh start"
+
