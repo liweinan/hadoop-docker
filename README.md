@@ -70,13 +70,27 @@ bash-4.4#
 
 <p align="center"> {{ 跑oozie的例子 }} </p>
 
-首先执行[run_compose.sh](https://github.com/liweinan/hadoop-docker/blob/master/run_compose.sh)，然后登陆oozie容器：
+首先执行[run_compose.sh](https://github.com/liweinan/hadoop-docker/blob/master/run_compose.sh)，然后执行[setup_oozie.sh](https://github.com/liweinan/hadoop-docker/blob/master/setup_oozie.sh)。
+
+然后登陆oozie容器：
 
 ```bash
 % docker exec -it hadoop-docker_oozie_1 sh
 ```
 
 然后执行：
+
+```bash
+% oozie-setup.sh sharelib create -fs hdfs://hadoop:9000
+```
+
+```bash
+% oozied.sh start
+```
+
+```bash
+% oozie admin -shareliblist
+```
 
 ```bash
 % cd /opt/oozie-4.2.0 && oozie job -config examples/apps/map-reduce/job.properties -run
