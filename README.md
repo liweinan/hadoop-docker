@@ -68,4 +68,11 @@ hdfs://2280e24e3dd1:9000/
 bash-4.4#
 ```
 
+<p align="center"> {{ 跑oozie的例子 }} </p>
+
+首先执行[run_compose.sh](https://github.com/liweinan/hadoop-docker/blob/master/run_compose.sh)，然后执行[setup_oozie.sh](https://github.com/liweinan/hadoop-docker/blob/master/setup_oozie.sh)。
+
+（未完待续）
+
+
 ∎
