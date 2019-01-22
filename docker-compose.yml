@@ -3,10 +3,12 @@ services:
   hadoop:
     image: "weli/hadoop-learn"
     ports:
-      - "9000:9000"
+      - "8088:8088" # resourcemanager
+      - "9000:9000" # hdfs/namenode port
+      - "19888:19888" # job history server
   oozie:
     image: "weli/hadoop-oozie"
     ports:
-      - "11000:11000"
+      - "11000:11000" # oozie admin port
     depends_on:
       - "hadoop"
