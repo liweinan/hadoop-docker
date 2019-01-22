@@ -72,7 +72,22 @@ bash-4.4#
 
 首先执行[run_compose.sh](https://github.com/liweinan/hadoop-docker/blob/master/run_compose.sh)，然后执行[setup_oozie.sh](https://github.com/liweinan/hadoop-docker/blob/master/setup_oozie.sh)。
 
-（未完待续）
+然后登陆oozie容器：
 
+```bash
+% docker exec -it hadoop-docker_oozie_1 sh
+```
+
+然后执行：
+
+```bash
+% cd /opt/oozie-4.2.0 && oozie job -config examples/apps/map-reduce/job.properties -run
+```
+
+然后查看任务运行情况：
+
+```bash
+% oozie job -info [job_id]
+```
 
 ∎
