@@ -118,7 +118,7 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
      $HADOOP_PREFIX/bin/hdfs dfs -put max-temp-workflow max-temp-workflow
 
 COPY oozie-examples.tar.gz /root
-RUN tar zxvf oozie-examples.tar.gz
+RUN cd /root && tar zxvf oozie-examples.tar.gz
 RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
      $HADOOP_PREFIX/sbin/start-dfs.sh && \
      $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
