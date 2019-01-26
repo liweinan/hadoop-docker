@@ -141,6 +141,8 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
 
 ENV PATH $SPARK_HOME/bin:$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
 
+RUN apk --no-cache add python
+
 CMD ["/etc/bootstrap.sh", "-d"]
 
 # Hdfs ports
