@@ -125,7 +125,21 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
      cd /root && \
      $HADOOP_PREFIX/bin/hdfs dfs -put examples examples
 
-ENV PATH $HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
+# SPARK
+RUN curl -s http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz | tar -xz -C /usr/local/
+RUN cd /usr/local && ln -s spark-1.6.1-bin-hadoop2.6 spark
+
+ENV SPARK_HOME /usr/local/spark
+
+# RUN mkdir -p $SPARK_HOME/yarn-remote-client
+# ADD yarn-remote-client $SPARK_HOME/yarn-remote-client
+
+RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
+     $HADOOP_PREFIX/sbin/start-dfs.sh && \
+     $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
+     $HADOOP_PREFIX/bin/hdfs dfs -put $SPARK_HOME-1.6.1-bin-hadoop2.6/lib /spark
+
+ENV PATH $SPARK_HOME/bin:$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
