@@ -161,8 +161,10 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositori
  && x11vnc -storepasswd $VNC_PASSWORD /etc/vncsecret \
  && chmod 444 /etc/vncsecret
 
-ADD https://raw.githubusercontent.com/patterns/docker-x11vnc/master/supervisord.conf \
- /etc/supervisor/conf.d
+#ADD https://raw.githubusercontent.com/patterns/docker-x11vnc/master/supervisord.conf \
+# /etc/supervisor/conf.d
+
+COPY supervisord.conf /etc/supervisor/conf.d
 
 RUN apk --no-cache add midori
 
