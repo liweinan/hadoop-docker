@@ -164,6 +164,8 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositori
 ADD https://raw.githubusercontent.com/patterns/docker-x11vnc/master/supervisord.conf \
  /etc/supervisor/conf.d
 
+RUN apk --no-cache add midori
+
 CMD ["/etc/bootstrap.sh", "-d"]
 
 # Hdfs ports
@@ -178,4 +180,5 @@ EXPOSE 49707 2122
 EXPOSE 8042
 #safe mode test port
 #EXPOSE 54321
+# vnc port
 EXPOSE 5900
