@@ -28,6 +28,9 @@ $HADOOP_PREFIX/sbin/mr-jobhistory-daemon.sh start historyserver
 
 # https://stackoverflow.com/questions/44469234/cannot-create-directory-in-hdfs-namenode-is-in-safe-mode
 $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave
+
+/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+
 tail -f /dev/null
 #nc -l -p 54321 -s 0.0.0.0
 
