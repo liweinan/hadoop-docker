@@ -166,8 +166,7 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositori
 
 COPY supervisord.conf /etc/supervisor/conf.d
 
-RUN apk --no-cache add midori
-RUN apk --no-cache add fvwm
+RUN apk --no-cache add fvwm xterm chromium
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
