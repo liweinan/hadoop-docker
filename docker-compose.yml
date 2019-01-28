@@ -2,6 +2,7 @@ version: '3'
 services:
   hadoop:
     image: "weli/hadoop-learn"
+    entrypoint: "/etc/bootstrap.sh"
     ports:
       - "2122:2122" # sshd
       - "5900:5900" # vnc
