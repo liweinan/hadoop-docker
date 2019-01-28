@@ -107,43 +107,17 @@ RUN ls -la /usr/local/hadoop/etc/hadoop/*-env.sh
 #RUN echo "UsePAM no" >> /etc/ssh/sshd_config
 RUN echo "Port 2122" >> /etc/ssh/sshd_config
 
-# https://stackoverflow.com/questions/14612371/how-do-i-run-multiple-background-commands-in-bash-in-a-single-line
-RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
- $HADOOP_PREFIX/sbin/start-dfs.sh && \
- $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
- $HADOOP_PREFIX/bin/hdfs dfs -mkdir -p /user/root
-RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
- $HADOOP_PREFIX/sbin/start-dfs.sh && \
- $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \ 
- $HADOOP_PREFIX/bin/hdfs dfs -put $HADOOP_PREFIX/etc/hadoop/ input
-RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
-     $HADOOP_PREFIX/sbin/start-dfs.sh && \
-     $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
-     cd /root/hadoop-book/hadoop-examples/target && \
-     $HADOOP_PREFIX/bin/hdfs dfs -put max-temp-workflow max-temp-workflow
-
+#TODO merge oozie container
 COPY oozie-examples.tar.gz /root
-RUN cd /root && tar zxvf oozie-examples.tar.gz
-RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
-     $HADOOP_PREFIX/sbin/start-dfs.sh && \
-     $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
-     cd /root && \
-     $HADOOP_PREFIX/bin/hdfs dfs -put examples examples
 
 # SPARK
-RUN curl -s http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz | tar -xz -C /usr/local/
-RUN cd /usr/local && ln -s spark-1.6.1-bin-hadoop2.6 spark
+ARG SPARK_BIN=spark-2.2.0-bin-hadoop2.7
+ENV SPARK_BIN ${SPARK_BIN}
+
+RUN curl -s http://d3kbcqa49mib13.cloudfront.net/${SPARK_BIN}.tgz | tar -xz -C /usr/local/
+RUN cd /usr/local && ln -s ${SPARK_BIN} spark
 
 ENV SPARK_HOME /usr/local/spark
-
-# RUN mkdir -p $SPARK_HOME/yarn-remote-client
-# ADD yarn-remote-client $SPARK_HOME/yarn-remote-client
-
-RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
-     $HADOOP_PREFIX/sbin/start-dfs.sh && \
-     $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave && \
-     $HADOOP_PREFIX/bin/hdfs dfs -put $SPARK_HOME-1.6.1-bin-hadoop2.6/lib /spark
-
 ENV PATH $SPARK_HOME/bin:$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
 
 #ADD https://raw.githubusercontent.com/patterns/docker-x11vnc/master/supervisord.conf \
