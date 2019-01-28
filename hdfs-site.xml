@@ -8,4 +8,8 @@
         <name>dfs.permissions.enabled</name>
         <value>false</value>
     </property>
+    <property>
+        <name>dfs.name.dir</name>
+        <value>/hadoop-data</value>
+    </property>
 </configuration>
