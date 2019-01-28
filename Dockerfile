@@ -8,11 +8,32 @@ MAINTAINER l.weinan@gmail.com
 USER root
 
 # install dev tools
-RUN apk --no-cache add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget maven git tree patch python
+RUN apk --no-cache add curl which tar sudo rsync openssh zip unzip bash openjdk8 wget maven git tree patch python fvwm xterm chromium dbus
 # https://github.com/gliderlabs/docker-alpine/issues/397
 RUN apk --no-cache add busybox-extras
 # http://www.iops.cc/make-splunk-docker-w
 RUN apk --no-cache add --update procps
+
+# https://github.com/patterns/docker-x11vnc/blob/master/Dockerfile
+ARG VNC_PASSWORD=secret
+ENV VNC_PASSWORD ${VNC_PASSWORD}
+ENV GOPATH /home/alpine/go
+
+# vnc
+RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositories \
+ && apk --no-cache add \
+    x11vnc xvfb supervisor sudo \
+    dwm dmenu ii st \
+    ttf-ubuntu-font-family \
+    midori \
+ && addgroup alpine \
+ && adduser -G alpine -s /bin/ash -D alpine \
+ && echo "alpine:alpine" | /usr/sbin/chpasswd \
+ && echo "alpine    ALL=(ALL) ALL" >> /etc/sudoers \
+ && rm -rf /apk /tmp/* /var/cache/apk/* \
+ && mkdir -p /etc/supervisor/conf.d \
+ && x11vnc -storepasswd $VNC_PASSWORD /etc/vncsecret \
+ && chmod 444 /etc/vncsecret
 
 # passwordless ssh
 # https://www.ssh.com/ssh/host-key
@@ -141,35 +162,9 @@ RUN /usr/sbin/sshd -D & $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && \
 
 ENV PATH $SPARK_HOME/bin:$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
 
-# https://github.com/patterns/docker-x11vnc/blob/master/Dockerfile
-ARG VNC_PASSWORD=secret
-ENV VNC_PASSWORD ${VNC_PASSWORD}
-ENV GOPATH /home/alpine/go
-
-RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositories \
- && apk --no-cache add \
-    x11vnc xvfb supervisor sudo \
-    dwm dmenu ii st \
-    ttf-ubuntu-font-family \
-    midori \
- && addgroup alpine \
- && adduser -G alpine -s /bin/ash -D alpine \
- && echo "alpine:alpine" | /usr/sbin/chpasswd \
- && echo "alpine    ALL=(ALL) ALL" >> /etc/sudoers \
- && rm -rf /apk /tmp/* /var/cache/apk/* \
- && mkdir -p /etc/supervisor/conf.d \
- && x11vnc -storepasswd $VNC_PASSWORD /etc/vncsecret \
- && chmod 444 /etc/vncsecret
-
 #ADD https://raw.githubusercontent.com/patterns/docker-x11vnc/master/supervisord.conf \
 # /etc/supervisor/conf.d
-
 COPY supervisord.conf /etc/supervisor/conf.d
-
-RUN apk --no-cache add fvwm xterm chromium
-RUN apk --no-cache add dbus
-RUN rm -rf /apk /tmp/* /var/cache/apk/* \
-
 
 # CMD ["/etc/bootstrap.sh", "-d"]
 ENTRYPOINT ["/etc/bootstrap.sh"]
