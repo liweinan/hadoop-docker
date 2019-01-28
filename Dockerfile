@@ -172,7 +172,7 @@ RUN rm -rf /apk /tmp/* /var/cache/apk/* \
 
 
 # CMD ["/etc/bootstrap.sh", "-d"]
-CMD ["/etc/bootstrap.sh"]
+ENTRYPOINT ["/etc/bootstrap.sh"]
 
 # Hdfs ports
 EXPOSE 50010 50020 50070 50075 50090 8020 9000
