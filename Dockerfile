@@ -167,6 +167,9 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositori
 COPY supervisord.conf /etc/supervisor/conf.d
 
 RUN apk --no-cache add fvwm xterm chromium
+RUN apk --no-cache add dbus
+RUN rm -rf /apk /tmp/* /var/cache/apk/* \
+
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
