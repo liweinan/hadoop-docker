@@ -7,7 +7,7 @@ $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
 export PATH=$HADOOP_PREFIX/bin/:$HADOOP_PREFIX/sbin/:$PATH
  
-rm /tmp/*.pid
+rm -rf /tmp/*.pid
 
 # installing libraries if any - (resource urls added comma separated to the ACP system variable)
 cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -
@@ -31,7 +31,8 @@ $HADOOP_PREFIX/bin/hdfs dfsadmin -safemode leave
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
-tail -f /dev/null
+# tail -f /dev/null
+
 #nc -l -p 54321 -s 0.0.0.0
 
 #if [[ $1 == "-d" ]]; then
