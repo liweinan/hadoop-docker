@@ -1,4 +1,4 @@
-# Creates pseudo distributed hadoop 2.7.1
+# Creates pseudo distributed hadoop ${HADOOP_VER}
 #
 # ./build.sh
 
@@ -41,15 +41,11 @@ RUN ssh-keygen -A
 RUN ssh-keygen -q -N "" -t rsa -f /root/.ssh/id_rsa
 RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
-# download native support
-RUN mkdir -p /tmp/native
-#COPY hadoop-native-64-2.7.1.tgz /tmp/native
-RUN set -x && cd /tmp/native && wget -c https://github.com/sequenceiq/docker-hadoop-build/releases/download/v2.7.1/hadoop-native-64-2.7.1.tgz && tar zxvf hadoop-native-64-2.7.1.tgz
-
 # hadoop
-# COPY hadoop-2.7.1.tar.gz /usr/local
-RUN cd /usr/local && wget -c https://archive.apache.org/dist/hadoop/core/hadoop-2.7.1/hadoop-2.7.1.tar.gz && ls && tar zxvf hadoop-2.7.1.tar.gz
-RUN cd /usr/local && ln -s ./hadoop-2.7.1 hadoop
+ARG HADOOP_VER=2.7.2
+# COPY hadoop-${HADOOP_VER}.tar.gz /usr/local
+RUN cd /usr/local && wget -c https://archive.apache.org/dist/hadoop/core/hadoop-${HADOOP_VER}/hadoop-${HADOOP_VER}.tar.gz && ls && tar zxvf hadoop-${HADOOP_VER}.tar.gz
+RUN cd /usr/local && ln -s ./hadoop-${HADOOP_VER} hadoop
 
 # learn code
 # COPY hadoop-book /root/hadoop-book
@@ -91,21 +87,9 @@ ADD yarn-site.xml $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 
 RUN $HADOOP_PREFIX/bin/hdfs namenode -format
 
-# fixing the libhadoop.so like a boss
-RUN rm -rf /usr/local/hadoop/lib/native
-RUN mv /tmp/native /usr/local/hadoop/lib
-
 ADD ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config
 RUN chown root:root /root/.ssh/config
-
-# # installing supervisord
-# RUN yum install -y python-setuptools
-# RUN easy_install pip
-# RUN curl https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -o - | python
-# RUN pip install supervisor
-#
-# ADD supervisord.conf /etc/supervisord.conf
 
 ADD bootstrap.sh /etc/bootstrap.sh
 RUN chown root:root /etc/bootstrap.sh
